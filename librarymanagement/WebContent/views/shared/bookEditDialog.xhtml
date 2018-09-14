@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<p:dialog id="detail" widgetVar="detail">
+	  <p:scrollPanel mode="native" style="overflow:auto; min-width:450px !important; max-height:400px !important;">
+
+		<h:form id="categoryTop">
+			<p:panel header="Edit Book">
+
+				<p:panelGrid columns="2" style="width:95%;">
+					<h:outputLabel value="Name:" />
+					<p:inputText value="#{categoryBean.selectedBook.name}" />
+					<h:outputLabel value="Description" />
+					<p:inputText value="#{categoryBean.selectedBook.description}" />
+					<h:outputLabel value="Author" />
+					<p:inputText value="#{categoryBean.selectedBook.author}" />
+					<h:outputLabel value="Year" />
+					<p:inputText value="#{categoryBean.selectedBook.year}" />
+					<h:outputLabel value="Category" />
+
+
+						<p:dataTable id="categoryDialogSelect"
+									 styleClass="categorySub" 
+									 value="#{categoryBean.subCategory}"
+									 var="item" 
+									 rowIndexVar="row">
+
+							<p:column>
+								<h:selectOneMenu value="#{item.category}"
+									converter="#{categoryConverter}" styleClass="menu">
+
+									<f:selectItem itemLabel="Select Category"
+										itemValue="#{categoryBean.lastCategory}"
+										noSelectionOption="true" />
+
+									<f:selectItems value="#{categoryBean.getSubList(row)}"
+										var="category" itemValue="#{category}"
+										itemLabel="#{category.name}" />
+
+									<p:ajax
+										listener="#{categoryBean.handleCategoryChange(item.category,row)}"
+										process="@this" event="change"
+										update=":categoryTop:categoryDialogSelect" />
+
+								</h:selectOneMenu>
+								<br />
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+				<br />
+			</p:panel>
+
+			<p:commandButton value="Save"
+				action="#{categoryBean.updateBook(categoryBean.selectedBook)}"
+				update=":form" oncomplete="PF('detail').hide()" />   &#160;
+		   <p:commandButton value="Close" action="#{categoryBean.load()}"
+				oncomplete="PF('detail').hide(); return false" />
+
+		   </h:form>
+		</p:scrollPanel>
+	</p:dialog>
+
+</ui:composition>

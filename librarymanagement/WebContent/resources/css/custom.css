@@ -1,0 +1,151 @@
+/*!
+ * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+html {
+	height:100%;
+}
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    height:100%;
+}
+
+.slide-image {
+    width: 100%;
+}
+
+.carousel-holder {
+    margin-bottom: 30px;
+}
+
+.carousel-control,
+.item {
+    border-radius: 4px;
+}
+
+.caption {
+    height: 130px;
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.ratings {
+    padding-right: 10px;
+    padding-left: 10px;
+    color: #d17581;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #333;
+}
+
+footer {
+    margin: 0;
+}
+
+
+/*
+	custom styling
+*/
+
+.wrapper {	
+	min-height:100%;
+	position: relative;
+}
+
+
+.content {
+	padding-bottom: 60px; /*height of the footer*/	
+}
+
+
+.footer {
+	width:100%;
+	position:absolute;
+	bottom:20px;
+	height: 60px;
+	
+}
+
+/*Toggle Switch code*/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* overridden css */
+.help-block {
+	color: #ff0000;
+}
+
+
+.menu{
+	padding:8px 25px 8px 8px;
+}
+
+.business-header {
+  height: 50vh;
+  min-height: 300px;
+  background: url('http://placehold.it/1920x400') center center no-repeat scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+label.error {
+	color:red;
+}
+.categoryTables td:nth-child(3) {
+    width: 10px !important;
+}
+
+.DataTable table,
+.Datatable thead,
+.DataTable table > thead > tr > th,
+.DataTable table > tbody,
+.DataTable table > tbody > tr,
+.DataTable table > tbody > tr > td {
+  font-size:15px;
+}
+    
+.categorySub table,
+.categorySub thead,
+.categorySub table > thead > tr > th,
+.categorySub table > tbody,
+.categorySub table > tbody > tr,
+.categorySub table > tbody > tr > td {
+        
+font-weight:normal !important;
+font-size:15px;
+border: none !important;
+padding: 0 !important;
+width:200px;     
+}
+
+#globalFilter{
+	width:150px
+}
+
+

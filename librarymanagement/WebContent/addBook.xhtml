@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:metadata>
+	<f:viewAction action="#{categoryBean.load}"
+		rendered="#{facesContext.postBack}" onPostBack="true" />
+</f:metadata>
+
+<h:head>
+	<!-- Bootstrap Core CSS -->
+	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Bootstrap Readable Theme -->
+	<link href="resources/css/bootstrap-readable-theme.css"
+		rel="stylesheet" />
+
+	<!-- Custom CSS -->
+	<link href="resources/css/custom.css" rel="stylesheet" />
+
+	<script>
+	window.menu = '#{view.viewId}';
+	</script>
+</h:head>
+<h:body>
+
+	<ui:include src="/views/shared/navbar.xhtml" />
+
+	<div class="wrapper">
+		<div class="content">
+			<div class="container">
+				<div class="row">		     	
+					<!-- /////////////////////////Book Add Part//////////////////////////////////// -->
+					<div class="col-md-offset-2 col-md-8">
+						<div class="panel panel-danger">
+
+							<div class="panel-heading text-center">
+								<h4>Book Management</h4>
+							</div>
+
+							<div class="panel-body">
+								<h:form class="form-horizontal" id="selectForm">
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Name</label>
+										<div class="col-md-8">
+											<p:inputText value="#{categoryBean.book.name}" id="name"
+												required="true" requiredMessage="This field is required." />
+											<p:message for="name" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Description</label>
+										<div class="col-md-8">
+											<p:inputTextarea value="#{categoryBean.book.description}"
+												cols="22" id="description" required="true"
+												requiredMessage="This field is required." />
+											<p:message for="description" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Author</label>
+										<div class="col-md-8">
+											<p:inputText value="#{categoryBean.book.author}" id="author"
+												required="true" requiredMessage="This field is required." />
+											<p:message for="author" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Year</label>
+										<div class="col-md-8">
+											<p:inputText value="#{categoryBean.book.year}" id="year"
+												required="true" requiredMessage="This field is required." />
+											<p:message for="year" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Category</label>
+										<div class="col-md-8">
+											<p:dataTable styleClass="categorySub" 
+														 id="categorySelect"
+														 value="#{categoryBean.subCategory}" 
+														 rowIndexVar="row"
+													 	 var="item">
+
+												<p:column>
+													<div class="form-group">
+														<div class="col-md-8">
+															<h:selectOneMenu value="#{item.category}"
+																converter="#{categoryConverter}" styleClass="menu">
+
+																<f:selectItem itemLabel="Select Category"
+																	itemValue="#{categoryBean.lastCategory}"
+																	noSelectionOption="true" />
+
+																<f:selectItems value="#{categoryBean.getSubList(row)}"
+																	var="category" itemValue="#{category}"
+																	itemLabel="#{category.name}" />
+
+																<p:ajax
+																	listener="#{categoryBean.handleCategoryChange(item.category,row)}"
+																	process="@this" event="change"
+																	update=":selectForm:categorySelect" />
+
+															</h:selectOneMenu>
+														</div>
+													</div>
+												</p:column>
+											</p:dataTable>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="col-md-offset-4 col-md-4">
+											<p:commandButton value="Submit" class="btn btn-primary"
+												action="#{categoryBean.addBook()}"
+												update="@(.DataTable),@form" />
+
+										</div>
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /////////////////////////Book List//////////////////////////////////// -->
+
+				<hr />
+				<div class="text-center">
+					<h1>Book List</h1>
+				</div>
+				<hr />
+
+				<div class="row">
+					<div class="col-md-offset-1 col-md-10">
+						<h:form id="form">
+							<p:dataTable var="book" 
+										 value="#{categoryBean.lastAddedBooks}"
+								         class="DataTable text-center"
+								          emptyMessage="No book found with given criteria">
+								
+								<p:column headerText="Name">
+									<h:outputText value="#{book.name}" />
+								</p:column>
+
+								<p:column headerText="Description">
+									<h:outputText value="#{book.description}" />
+								</p:column>
+
+								<p:column headerText="Author">
+									<h:outputText value="#{book.author}" />
+								</p:column>
+
+								<p:column headerText="Year">
+									<h:outputText value="#{book.year}" />
+								</p:column>
+
+
+								<p:column headerText="Category">
+									<h:outputText value="#{book.category.name}" />
+								</p:column>
+
+								<p:column>
+									<p:commandButton id="selectProduct" style="font-size: 15px;"
+										action="#{categoryBean.saveSelectedBook(book)}"
+										oncomplete="PF('detail').show();" update=":detail"
+										value="Edit">
+									</p:commandButton>
+
+								
+									<p:commandButton id="deleteBook" style="font-size: 15px;"
+										action="#{categoryBean.deleteBook(book)}" update=":form"
+										value="Delete">
+										   <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+									</p:commandButton>
+
+
+								</p:column>
+
+							</p:dataTable>
+							
+							
+							  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+       							 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+      						     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    						  </p:confirmDialog>
+    						  
+						</h:form>
+						<ui:include src="/views/shared/bookEditDialog.xhtml" />
+						<div class="text-right">
+							<em>This list show last 5 books which are added.</em>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<ui:include src="/views/shared/foot.xhtml" />
+
+		<!-- Bootstrap Core JavaScript -->
+		<script src="resources/js/bootstrap.min.js"></script>
+		<!-- Custom  JavaScript-->
+		<script src="resources/js/custom.js"></script>
+
+	</div>
+</h:body>
+</html>
+
+

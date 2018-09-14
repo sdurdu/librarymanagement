@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<f:metadata>
+	<f:viewAction action="#{categoryBean.load}"
+		rendered="#{facesContext.postBack}" onPostBack="true" />
+</f:metadata>
+
+<h:head>
+	<!-- Bootstrap Core CSS -->
+	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Bootstrap Readable Theme -->
+	<link href="resources/css/bootstrap-readable-theme.css"
+		rel="stylesheet" />
+
+	<!-- Custom CSS -->
+	<link href="resources/css/custom.css" rel="stylesheet" />
+
+	<script>
+	window.menu = '#{view.viewId}';
+	</script>
+
+</h:head>
+<h:body>
+	<!-- Include Navbar -->
+	<ui:include src="/views/shared/navbar.xhtml" />
+
+	<div class="wrapper">
+		<div class="content">
+			<!-- Page Content -->
+			<div class="container">
+				<div class="row">
+
+					<div class=" col-md-offset-1 col-md-10">
+						<div class="panel panel-danger"  style="border: none;">
+							<div class="panel-heading text-center">
+								<h3>Book List</h3>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12">
+	     <!-- /////////////////////////Book List//////////////////////////////////// -->
+										<h:form id="form">
+											<p:dataTable var="book" 
+														 value="#{categoryBean.bookList}"
+														 styleClass="DataTable"
+														 style="font-size:16px; 
+														 text-align:center;"
+														 resizableColumns="false" 
+														 selectMode="single"
+														 rowKey="book.id" 
+														 rows="10" 
+														 paginator="true"
+														 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+														 paginatorPosition="bottom" 
+														 rowsPerPageTemplate="5,8,10,15"
+														 widgetVar="bookTable"
+														 emptyMessage="No book found with given criteria">
+
+												<f:facet name="header">
+													<p:outputPanel>
+														<div align="right" style="font-weight: normal;">
+															<h:outputText value="Search all fields:" />
+															<p:inputText id="globalFilter"
+																onkeyup="PF('bookTable').filter()" style="width:150px"
+																placeholder="Enter keyword" />
+														</div>
+													</p:outputPanel>
+												</f:facet>
+
+												<p:column filterBy="#{book.name}" headerText="Name"
+													sortBy="#{book.name}" filterMatchMode="contains">
+													<h:outputText value="#{book.name}" />
+												</p:column>
+
+												<p:column filterBy="#{book.description}"
+													headerText="Description" sortBy="#{book.description}"
+													filterMatchMode="contains">
+													<h:outputText value="#{book.description}" />
+												</p:column>
+
+												<p:column filterBy="#{book.author}" headerText="Author"
+													sortBy="#{book.author}" filterMatchMode="contains">
+													<h:outputText value="#{book.author}" />
+												</p:column>
+
+
+												<p:column filterBy="#{book.year}" headerText="Year"
+													sortBy="#{book.year}" filterMatchMode="contains">
+													<h:outputText value="#{book.year}" />
+												</p:column>
+
+												<p:column filterBy="#{book.category.name}"
+													headerText="Category" sortBy="#{book.category.name}"
+													filterMatchMode="contains">
+													<h:outputText value="#{book.category.name}" />
+												</p:column>
+
+												<p:column style="min-width:100px;">
+													<p:commandButton id="selectProduct"
+														style="font-size: 14px;"
+														action="#{categoryBean.saveSelectedBook(book)}"
+														oncomplete="PF('detail').show();" update=":detail"
+														value="Edit">
+													</p:commandButton>
+
+
+													<p:commandButton id="deleteBook" style="font-size: 14px;"
+														action="#{categoryBean.deleteBook(book)}" update=":form"
+														value="Delete">
+														<p:confirm header="Confirmation" message="Are you sure?"
+															icon="ui-icon-alert" />
+													</p:commandButton>
+
+												</p:column>
+											</p:dataTable>
+											
+											<p:confirmDialog global="true" showEffect="fade"
+												hideEffect="fade">
+												<p:commandButton value="Yes" type="button"
+													styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+												<p:commandButton value="No" type="button"
+													styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+											</p:confirmDialog>
+										</h:form>
+										<!-- /////////////////////////Book Edit Modal//////////////////////////////////// -->
+										<ui:include src="/views/shared/bookEditDialog.xhtml" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Include Footer -->
+		<ui:include src="/views/shared/foot.xhtml" />
+		<!-- Bootstrap Core JavaScript -->
+		<script src="resources/js/bootstrap.min.js"></script>
+		<!-- Custom JavaScript-->
+		<script src="resources/js/custom.js"></script>
+	</div>
+
+</h:body>
+</html>

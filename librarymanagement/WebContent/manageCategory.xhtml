@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jstl/core">
+<f:metadata>
+	<f:viewAction action="#{categoryBean.load}"
+		rendered="#{facesContext.postBack}" onPostBack="true" />
+</f:metadata>
+
+<h:head>
+
+	<!-- Bootstrap Core CSS -->
+	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+
+	<!-- Bootstrap Readable Theme -->
+	<link href="resources/css/bootstrap-readable-theme.css"
+		rel="stylesheet" />
+	
+	<!-- Custom CSS -->
+	<link href="resources/css/custom.css" rel="stylesheet" />
+
+	<script>
+	window.menu = '#{view.viewId}';
+	
+	</script>
+
+</h:head>
+<h:body>
+
+	<ui:include src="/views/shared/navbar.xhtml" />
+
+	<div class="wrapper">
+		<div class="content">
+			<!-- Page Content -->
+			<div class="container">
+				<div class="row">
+
+
+					<!-- /////////////////////////Category List//////////////////////////////////// -->
+					<div class='col-md-8'>
+						<h:form id="form">
+
+							<p:dataTable var="category" 
+										 value="#{categoryBean.categoryList}"
+										 styleClass="DataTable"
+										 style="font-size:16px; 
+								 		 text-align:center;"
+										 resizableColumns="false" 
+										 selectMode="single"
+										 rowKey="category.id" 
+										 rows="8" 
+										 paginator="true"
+										 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+										 paginatorPosition="bottom" rowsPerPageTemplate="5,8,10,15"
+										 widgetVar="categoryTable"
+								    	 emptyMessage="No category found with given criteria">
+
+
+								<f:facet name="header">
+									<p:outputPanel>
+										<div align="right" style="font-weight: normal;">
+											<h:outputText value="Search all fields:" />
+											<p:inputText id="globalFilter"
+												onkeyup="PF('categoryTable').filter()" style="width:150px"
+												placeholder="Enter keyword" />
+										</div>
+									</p:outputPanel>
+								</f:facet>
+
+
+								<p:column filterBy="#{category.name}" headerText="Name"
+									sortBy="#{category.name}" filterStyle="display:none">
+									<h:outputText value="#{category.name}" />
+								</p:column>
+
+								<p:column filterBy="#{category.description}"
+									headerText="Description" sortBy="#{category.description}"
+									filterStyle="display:none">
+									<h:outputText value="#{category.description}" />
+								</p:column>
+
+
+								<p:column filterBy="#{category.category.name}"
+									headerText="Category" sortBy="#{category.category.name}"
+									filterStyle="display:none">
+									<h:outputText value="#{category.category.name}" />
+								</p:column>
+
+
+								<p:column style="width:100px !important;">
+									<p:commandButton id="selectProduct" style="font-size: 15px;"
+										action="#{categoryBean.saveSelectedCategory(category)}"
+										oncomplete="PF('detail').show();" update=":detail"
+										value="Edit">
+									</p:commandButton>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+
+
+						<!-- /////////////////////////Category Edit Dialog//////////////////////////////////// -->
+						<p:dialog id="detail" widgetVar="detail">
+							<p:scrollPanel mode="native"
+								style="overflow:auto; min-width:450px !important; max-height:400px !important;">
+
+								<h:form id="catSelectForm">
+									<p:panel header="Edit Category">
+
+
+										<p:panelGrid columns="2" style="width:95%;">
+											<h:outputLabel value="Name:" />
+											<p:inputText value="#{categoryBean.selectedCategory.name}" />
+											<h:outputLabel value="Description" />
+											<p:inputText
+												value="#{categoryBean.selectedCategory.description}" />
+
+											<h:outputLabel value="Category:" />
+
+											<p:dataTable styleClass="categorySub" 
+														 id="categoryEditSelect"
+														 value="#{categoryBean.subCategory}"
+														 rowIndexVar="row"
+														 var="item">
+
+												<p:column>
+													<h:selectOneMenu value="#{item.category}"
+														converter="#{categoryConverter}" styleClass="menu">
+
+														<f:selectItem itemLabel="Select Category"
+															itemValue="#{categoryBean.lastCategory}"
+															noSelectionOption="true" />
+
+														<f:selectItems value="#{categoryBean.getSubList(row)}"
+															var="category" itemValue="#{category}"
+															itemLabel="#{category.name}" />
+
+														<p:ajax
+															listener="#{categoryBean.handleCategoryChange(item.category,row)}"
+															process="@this" event="change"
+															update=":catSelectForm:categoryEditSelect" />
+
+													</h:selectOneMenu>
+												</p:column>
+											</p:dataTable>
+										</p:panelGrid>
+										<br />
+
+									</p:panel>
+									<p:commandButton value="Save"
+										action="#{categoryBean.updateCategory(categoryBean.selectedCategory)}"
+										update=":form" oncomplete="PF('detail').hide()" />   &#160;
+										
+								 <p:commandButton value="Close" action="#{categoryBean.load()}"
+										oncomplete="PF('detail').hide(); return false" />
+
+								</h:form>
+							</p:scrollPanel>
+						</p:dialog>
+					</div>
+
+					<!-- /////////////////////////Category Add//////////////////////////////////// -->
+					<div class="col-md-4">
+						<div class="panel panel-danger" style="border: none;">
+							<div class="panel-heading text-center">
+
+								<h4>Category Management</h4>
+							</div>
+
+							<div class="panel-body">
+
+								<h:form class="form-horizontal" id="selectForm">
+									<div class="form-group">
+										<label class="control-label col-md-4">Name</label>
+										<div class="col-md-8">
+											<p:inputText value="#{categoryBean.category.name}" id="name"
+												required="true" requiredMessage="This field is required." />
+											<p:message for="name" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Description</label>
+										<div class="col-md-8">
+											<p:inputTextarea value="#{categoryBean.category.description}"
+												cols="22" id="description" required="true"
+												requiredMessage="This field is required." />
+											<p:message for="description" styleClass="error"></p:message>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Category</label>
+										<div class="col-md-8">
+
+											<p:dataTable styleClass="categorySub" 
+														 id="categorySelect"
+														 value="#{categoryBean.subCategory}" 
+														 rowIndexVar="row"
+														 var="item">
+
+												<p:column>
+													<div class="form-group">
+														<div class="col-md-8">
+															<h:selectOneMenu value="#{item.category}"
+																converter="#{categoryConverter}" styleClass="menu">
+
+																<f:selectItem itemLabel="Select Category"
+																	itemValue="#{categoryBean.lastCategory}"
+																	noSelectionOption="true" />
+
+																<f:selectItems value="#{categoryBean.getSubList(row)}"
+																	var="category" itemValue="#{category}"
+																	itemLabel="#{category.name}" />
+
+																<p:ajax
+																	listener="#{categoryBean.handleCategoryChange(item.category,row)}"
+																	process="@this" event="change"
+																	update=":selectForm:categorySelect" />
+
+															</h:selectOneMenu>
+														</div>
+													</div>
+												</p:column>
+											</p:dataTable>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<div class="col-md-offset-4 col-md-4">
+											<p:commandButton value="Submit" class="btn btn-primary"
+												action="#{categoryBean.addCategory(categoryBean.category)}"
+												update="@(.myDataTable),@form,:form" />
+
+										</div>
+									</div>
+								</h:form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<ui:include src="/views/shared/foot.xhtml" />
+		
+		<!-- Bootstrap Core JavaScript -->
+		<script src="resources/js/bootstrap.min.js"></script>
+
+		<!-- Custom JavaScript -->
+		<script src="resources/js/custom.js"></script>
+
+	</div>
+
+</h:body>
+</html>
+
+
