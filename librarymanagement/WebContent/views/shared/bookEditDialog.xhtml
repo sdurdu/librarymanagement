@@ -6,28 +6,28 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 	<p:dialog id="detail" widgetVar="detail">
-	  <p:scrollPanel mode="native" style="overflow:auto; min-width:450px !important; max-height:400px !important;">
+		<p:scrollPanel mode="native"
+			style="overflow:auto; min-width:450px !important; max-height:400px !important;">
 
-		<h:form id="categoryTop">
-			<p:panel header="Edit Book">
+			<h:form id="categoryTop">
+				<p:panel header="Edit Book">
 
-				<p:panelGrid columns="2" style="width:95%;">
-					<h:outputLabel value="Name:" />
-					<p:inputText value="#{categoryBean.selectedBook.name}" />
-					<h:outputLabel value="Description" />
-					<p:inputText value="#{categoryBean.selectedBook.description}" />
-					<h:outputLabel value="Author" />
-					<p:inputText value="#{categoryBean.selectedBook.author}" />
-					<h:outputLabel value="Year" />
-					<p:inputText value="#{categoryBean.selectedBook.year}" />
-					<h:outputLabel value="Category" />
+					<p:panelGrid columns="2" style="width:95%;">
+						<h:outputLabel value="Name:" />
+						<p:inputText value="#{categoryBean.selectedBook.name}" />
+						<h:outputLabel value="Description" />
+						<p:inputText value="#{categoryBean.selectedBook.description}" />
+						<h:outputLabel value="Author" />
+						<p:inputText value="#{categoryBean.selectedBook.author}" />
+						<h:outputLabel value="Year" />
+						<p:inputText value="#{categoryBean.selectedBook.year}" />
+						<h:outputLabel value="Category" />
 
 
-						<p:dataTable id="categoryDialogSelect"
-									 styleClass="categorySub" 
-									 value="#{categoryBean.subCategory}"
-									 var="item" 
-									 rowIndexVar="row">
+						<p:dataTable id="categoryDialogSelect" 
+									 styleClass="categorySub"
+									 value="#{categoryBean.subCategory}" 
+									 var="item" rowIndexVar="row">
 
 							<p:column>
 								<h:selectOneMenu value="#{item.category}"
@@ -51,16 +51,16 @@
 							</p:column>
 						</p:dataTable>
 					</p:panelGrid>
-				<br />
-			</p:panel>
+					<br />
+				</p:panel>
 
-			<p:commandButton value="Save"
-				action="#{categoryBean.updateBook(categoryBean.selectedBook)}"
-				update=":form" oncomplete="PF('detail').hide()" />   &#160;
+				<p:commandButton value="Save"
+					action="#{categoryBean.updateBook(categoryBean.selectedBook)}"
+					update=":form" oncomplete="PF('detail').hide()" />   &#160;
 		   <p:commandButton value="Close" action="#{categoryBean.load()}"
-				oncomplete="PF('detail').hide(); return false" />
+					oncomplete="PF('detail').hide(); return false" />
 
-		   </h:form>
+			</h:form>
 		</p:scrollPanel>
 	</p:dialog>
 

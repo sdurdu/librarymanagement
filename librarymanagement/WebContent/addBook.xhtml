@@ -32,7 +32,7 @@
 	<div class="wrapper">
 		<div class="content">
 			<div class="container">
-				<div class="row">		     	
+				<div class="row">
 					<!-- /////////////////////////Book Add Part//////////////////////////////////// -->
 					<div class="col-md-offset-2 col-md-8">
 						<div class="panel panel-danger">
@@ -92,7 +92,7 @@
 														 id="categorySelect"
 														 value="#{categoryBean.subCategory}" 
 														 rowIndexVar="row"
-													 	 var="item">
+														 var="item">
 
 												<p:column>
 													<div class="form-group">
@@ -146,10 +146,10 @@
 					<div class="col-md-offset-1 col-md-10">
 						<h:form id="form">
 							<p:dataTable var="book" 
-										 value="#{categoryBean.lastAddedBooks}"
-								         class="DataTable text-center"
-								          emptyMessage="No book found with given criteria">
-								
+									     value="#{categoryBean.lastAddedBooks}"
+										 class="DataTable text-center"
+										 emptyMessage="No book found with given criteria">
+
 								<p:column headerText="Name">
 									<h:outputText value="#{book.name}" />
 								</p:column>
@@ -178,24 +178,27 @@
 										value="Edit">
 									</p:commandButton>
 
-								
+
 									<p:commandButton id="deleteBook" style="font-size: 15px;"
 										action="#{categoryBean.deleteBook(book)}" update=":form"
 										value="Delete">
-										   <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+										<p:confirm header="Confirmation" message="Are you sure?"
+											icon="ui-icon-alert" />
 									</p:commandButton>
 
 
 								</p:column>
-
 							</p:dataTable>
-							
-							
-							  <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-       							 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-      						     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    						  </p:confirmDialog>
-    						  
+
+
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Yes" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="No" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+
 						</h:form>
 						<ui:include src="/views/shared/bookEditDialog.xhtml" />
 						<div class="text-right">

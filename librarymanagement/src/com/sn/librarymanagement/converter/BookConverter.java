@@ -27,9 +27,8 @@ public class BookConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
+
 		Book b = (Book) value;
 		return new Long(b.getId()).toString();
-
 	}
-
 }

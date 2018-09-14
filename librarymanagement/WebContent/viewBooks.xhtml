@@ -38,25 +38,22 @@
 				<div class="row">
 
 					<div class=" col-md-offset-1 col-md-10">
-						<div class="panel panel-danger"  style="border: none;">
+						<div class="panel panel-danger" style="border: none;">
 							<div class="panel-heading text-center">
 								<h3>Book List</h3>
 							</div>
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-md-12">
-	     <!-- /////////////////////////Book List//////////////////////////////////// -->
+										<!-- /////////////////////////Book List//////////////////////////////////// -->
 										<h:form id="form">
+											
 											<p:dataTable var="book" 
 														 value="#{categoryBean.bookList}"
 														 styleClass="DataTable"
-														 style="font-size:16px; 
-														 text-align:center;"
-														 resizableColumns="false" 
-														 selectMode="single"
-														 rowKey="book.id" 
-														 rows="10" 
-														 paginator="true"
+														 style="font-size:16px; text-align:center;"
+														 resizableColumns="false" selectMode="single"
+														 rowKey="book.id" rows="10" paginator="true"
 														 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 														 paginatorPosition="bottom" 
 														 rowsPerPageTemplate="5,8,10,15"
@@ -120,7 +117,7 @@
 
 												</p:column>
 											</p:dataTable>
-											
+
 											<p:confirmDialog global="true" showEffect="fade"
 												hideEffect="fade">
 												<p:commandButton value="Yes" type="button"
@@ -138,7 +135,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 
 		<!-- Include Footer -->

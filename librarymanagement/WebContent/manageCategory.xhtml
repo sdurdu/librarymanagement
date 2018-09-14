@@ -19,7 +19,7 @@
 	<!-- Bootstrap Readable Theme -->
 	<link href="resources/css/bootstrap-readable-theme.css"
 		rel="stylesheet" />
-	
+
 	<!-- Custom CSS -->
 	<link href="resources/css/custom.css" rel="stylesheet" />
 
@@ -49,15 +49,12 @@
 										 styleClass="DataTable"
 										 style="font-size:16px; 
 								 		 text-align:center;"
-										 resizableColumns="false" 
-										 selectMode="single"
-										 rowKey="category.id" 
-										 rows="8" 
-										 paginator="true"
+										 resizableColumns="false" selectMode="single"
+										 rowKey="category.id" rows="8" paginator="true"
 										 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 										 paginatorPosition="bottom" rowsPerPageTemplate="5,8,10,15"
 										 widgetVar="categoryTable"
-								    	 emptyMessage="No category found with given criteria">
+										 emptyMessage="No category found with given criteria">
 
 
 								<f:facet name="header">
@@ -122,7 +119,7 @@
 
 											<p:dataTable styleClass="categorySub" 
 														 id="categoryEditSelect"
-														 value="#{categoryBean.subCategory}"
+														 value="#{categoryBean.subCategory}" 
 														 rowIndexVar="row"
 														 var="item">
 
@@ -249,7 +246,7 @@
 		</div>
 
 		<ui:include src="/views/shared/foot.xhtml" />
-		
+
 		<!-- Bootstrap Core JavaScript -->
 		<script src="resources/js/bootstrap.min.js"></script>
 

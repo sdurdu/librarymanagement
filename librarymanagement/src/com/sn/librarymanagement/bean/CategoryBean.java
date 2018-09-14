@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Named("categoryBean")
 @ViewScoped
 @Component
-public class CategoryBean implements Serializable  {
+public class CategoryBean implements Serializable {
 
 	@Autowired
 	private BookService bookService;
@@ -31,141 +31,131 @@ public class CategoryBean implements Serializable  {
 	private Category category;
 	private Category selectedCategory;
 	private List<Category> categoryList;
-	private List<Category> categoryTempList; 
+	private List<Category> categoryTempList;
 	private List<Category> subCategory;
-    private Map<Integer, List<Category>> categoryMap;
-    private Category lastCategory;
-    
+	private Map<Integer, List<Category>> categoryMap;
+	private Category lastCategory;
+
 	private Book book;
-	private Book selectedBook; 
+	private Book selectedBook;
 	private List<Book> bookList;
 	private List<Book> lastAddedBooks;
-	
-	
+
 	@PostConstruct
 	public void load() {
-		
+
 		category = new Category();
 		categoryTempList = categoryService.listRootCategories();
 		categoryList = categoryService.listCategories();
-		
+
 		book = new Book();
 		selectedBook = new Book();
 		bookList = bookService.listBooks();
-		lastAddedBooks=bookService.getLatestActiveBooks(5L); 
-		
-        subCategory= new ArrayList<Category>();
-        subCategory.add(new Category());
-        categoryMap= new HashMap<Integer,List<Category>>();
-        categoryMap.put(0,categoryTempList);
-        lastCategory=new Category();
+		lastAddedBooks = bookService.getLatestActiveBooks(5L);
+
+		subCategory = new ArrayList<Category>();
+		subCategory.add(new Category());
+		categoryMap = new HashMap<Integer, List<Category>>();
+		categoryMap.put(0, categoryTempList);
+		lastCategory = new Category();
 
 	}
 
-	// Add book 
+	// Add book
 	public void addBook() {
 		book.setCategory(lastCategory);
-		bookService.addBook(book);	
+		bookService.addBook(book);
 		load();
 	}
-	
-    //Update book
+
+	// Update book
 	public void updateBook(Book book) {
 		book.setCategory(lastCategory);
 		bookService.updateBook(book);
 		load();
 	}
-	
-	
-	//Save selected book to edit
+
+	// Save selected book to edit
 	public void saveSelectedBook(Book book) {
-		selectedBook=book;
-	
+		selectedBook = book;
+
 	}
 
-	
-	// Soft delete of book 
+	// Soft delete of book
 	public void deleteBook(Book book) {
 
 		bookService.deleteBook(book);
 		load();
 
 	}
-	
-	
-	//Add category into database.
+
+	// Add category into database.
 	public void addCategory(Category category) {
 
 		category.setCategory(lastCategory);
 		categoryService.addCategory(category);
 		load();
-
 	}
-	
-	
-	//Save selected category to edit
+
+	// Save selected category to edit
 	public void saveSelectedCategory(Category category) {
-		  selectedCategory=category;
+		
+		selectedCategory = category;
 	}
-	
-	//Update category
+
+	// Update category
 	public void updateCategory(Category category) {
-	     category.setCategory(lastCategory);
-		 categoryService.updateCategory(category);
-		 load();
+		
+		category.setCategory(lastCategory);
+		categoryService.updateCategory(category);
+		load();
 	}
-	
-	// Soft delete of category 
+
+	// Soft delete of category
 	public void deleteCategory(Category category) {
-		 categoryService.deleteCategory(category); 
-		 load();
+		
+		categoryService.deleteCategory(category);
+		load();
 	}
-	
+
 	// Get current subcategory list
-	public List<Category> getSubList(int id){
-		
-		 
-		 return categoryMap.get(id);
+	public List<Category> getSubList(int id) {
+
+		return categoryMap.get(id);
 	}
 
-
-	// Create subcategory list based on  selection
+	// Create subcategory list based on selection
 	public void handleCategoryChange(Category parent, int row) {
-		
-		lastCategory= parent;
-		
-		if(categoryMap.get(row) != null) {
-			for(int i=categoryMap.size()-1; row<i; i--) {
+
+		lastCategory = parent;
+		if (categoryMap.get(row) != null) {
+			for (int i = categoryMap.size() - 1; row < i; i--) {
 				categoryMap.remove(i);
 				subCategory.remove(i);
 			}
 		}
-		
+
 		if (parent.getId() != 0 && parent.getId() != 1) {
 			categoryTempList = new ArrayList<>();
-		
 
 			for (Category c : categoryList) {
 				if (c.getCategory().getId() == parent.getId()) {
 					categoryTempList.add(c);
 				}
 			}
-			
-			if(categoryTempList != null && !categoryTempList.isEmpty()) {	
-			subCategory.add(new Category());
-		
-		    categoryMap.put(row+1,categoryTempList);
-		 
+
+			if (categoryTempList != null && !categoryTempList.isEmpty()) {
+				subCategory.add(new Category());
+
+				categoryMap.put(row + 1, categoryTempList);
 			}
-			
+
 		} else {
 			categoryTempList = new ArrayList<Category>();
-			
 		}
 	}
 
-	
-	//Getters and Setters of fields.
+	// Getters and Setters of fields.
 	public BookService getBookService() {
 		return bookService;
 	}
@@ -238,7 +228,6 @@ public class CategoryBean implements Serializable  {
 		this.selectedCategory = selectedCategory;
 	}
 
-
 	public List<Category> getSubCategory() {
 		return subCategory;
 	}
@@ -247,20 +236,17 @@ public class CategoryBean implements Serializable  {
 		this.subCategory = subCategory;
 	}
 
-
-	public Map<Integer,List<Category>> getCategoryMap() {
+	public Map<Integer, List<Category>> getCategoryMap() {
 		return categoryMap;
 	}
 
-	public void setCategoryMap(Map<Integer,List<Category>> categoryMap) {
+	public void setCategoryMap(Map<Integer, List<Category>> categoryMap) {
 		this.categoryMap = categoryMap;
 	}
-
 
 	public Category getLastCategory() {
 		return lastCategory;
 	}
-
 
 	public void setLastCategory(Category lastCategory) {
 		this.lastCategory = lastCategory;
@@ -273,7 +259,5 @@ public class CategoryBean implements Serializable  {
 	public void setLastAddedBooks(List<Book> lastAddedBooks) {
 		this.lastAddedBooks = lastAddedBooks;
 	}
-	
-	
 
 }

@@ -12,44 +12,45 @@ import com.sn.librarymanagement.service.CategoryService;
 
 @Service
 @Repository
-public class CategoryServiceImpl implements CategoryService{
-    
+public class CategoryServiceImpl implements CategoryService {
+
 	@Autowired
 	private CategoryDAO categoryDAO;
-	
+
 	@Override
 	public List<Category> listCategories() {
-	   return categoryDAO.listCategories();
+
+		return categoryDAO.listCategories();
 	}
- 
+
 	@Override
 	public void addCategory(Category category) {
-			categoryDAO.addCategory(category);
+
+		categoryDAO.addCategory(category);
 	}
 
 	@Override
 	public void updateCategory(Category category) {
-			categoryDAO.updateCategory(category);
-		
+
+		categoryDAO.updateCategory(category);
 	}
-	
+
 	@Override
 	public void deleteCategory(Category category) {
-		  categoryDAO.deleteCategory(category);
-		
+
+		categoryDAO.deleteCategory(category);
 	}
 
 	@Override
 	public Category getCategory(long categoryId) {
-		
-		 return categoryDAO.getCategory(categoryId);
+
+		return categoryDAO.getCategory(categoryId);
 	}
 
 	@Override
 	public List<Category> listRootCategories() {
-	
+
 		return categoryDAO.listRootCategories();
 	}
-
 
 }

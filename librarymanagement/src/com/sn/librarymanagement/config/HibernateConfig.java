@@ -44,7 +44,6 @@ public class HibernateConfig {
 	}
 	
 	// sessionFactory bean will be available
-	
 	@Bean
 	public SessionFactory getSessionFactory(DataSource dataSource) {
 		
@@ -57,7 +56,6 @@ public class HibernateConfig {
 		
 	}
 
-	
 	
 	// All the hibernate properties will be returned in this method	
 	private Properties getHibernateProperties() {
@@ -81,6 +79,4 @@ public class HibernateConfig {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
 		return transactionManager;
 	}
-	
-	
 }
